@@ -87,5 +87,48 @@
         "nameRequired": "Förnamn och efternamn krävs"
       }
     }
+  },
+  "dashboard": {
+    "title": "Mina diagram",
+    "welcome": "Välkommen, {{name}}",
+    "signOut": "Logga ut",
+    "newDiagram": "Nytt diagram",
+    "noDiagrams": {
+      "title": "Inga diagram än",
+      "subtitle": "Skapa ditt första BPMN-diagram för att komma igång",
+      "cta": "Skapa ditt första diagram"
+    },
+    "card": {
+      "lastEdited": "Senast redigerad: {{date}}",
+      "delete": "Ta bort diagram",
+      "confirm": "Bekräfta",
+      "cancel": "Avbryt"
+    }
+  },
+  "editor": {
+    "back": "Tillbaka",
+    "untitledDiagram": "Namnlöst diagram",
+    "clickToEditName": "Klicka för att redigera namn",
+    "loadBpmn": "Ladda BPMN",
+    "save": "Spara",
+    "saving": "Sparar...",
+    "saved": "Sparat!",
+    "downloadBpmn": "Ladda ner BPMN",
+    "downloadSvg": "Ladda ner SVG",
+    "delete": "Ta bort",
+    "loadingEditor": "Laddar editor...",
+    "loadingFile": "Laddar och sparar diagram...",
+    "loadingDiagram": "Laddar diagram...",
+    "creatingDiagram": "Skapar diagram...",
+    "tryAgain": "Försök igen",
+    "errors": {
+      "loadFailed": "Kunde inte ladda diagrameditorn",
+      "saveFailed": "Kunde inte spara diagram",
+      "importFailed": "Kunde inte importera diagram. Se till att filen är en giltig BPMN-fil.",
+      "diagramNotFound": "Diagram hittades inte",
+      "loadDiagramFailed": "Kunde inte ladda diagram",
+      "deleteFailed": "Kunde inte ta bort diagram"
+    },
+    "confirmDelete": "Är du säker på att du vill ta bort detta diagram?"
   }
 }

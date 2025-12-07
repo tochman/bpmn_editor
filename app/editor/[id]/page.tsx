@@ -2,13 +2,14 @@
 
 import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import styles from './page.module.css';
 
 // Dynamically import the BPMN editor to avoid SSR issues
 const BpmnEditor = dynamic(
   () => import('@/components/editor/BpmnEditor'),
-  { ssr: false, loading: () => <div className={styles.loading}>Loading editor...</div> }
+  { ssr: false }
 );
 
 interface Diagram {
@@ -18,11 +19,13 @@ interface Diagram {
 }
 
 export default function EditorPage({ params }: { params: Promise<{ id: string }> }) {
+  const { t } = useTranslation();
   const router = useRouter();
   const [diagram, setDiagram] = useState<Diagram | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [diagramId, setDiagramId] = useState<string | null>(null);
+  const diagramNameRef = useRef<string>('');
 
   // Unwrap params
   useEffect(() => {
@@ -41,13 +44,14 @@ export default function EditorPage({ params }: { params: Promise<{ id: string }>
         if (response.ok) {
           const data = await response.json();
           setDiagram(data);
+          diagramNameRef.current = data.name;
         } else if (response.status === 404) {
-          setError('Diagram not found');
+          setError('editor.errors.diagramNotFound');
         } else {
-          setError('Failed to load diagram');
+          setError('editor.errors.loadDiagramFailed');
         }
       } catch {
-        setError('Failed to load diagram');
+        setError('editor.errors.loadDiagramFailed');
       } finally {
         setLoading(false);
       }
@@ -56,7 +60,7 @@ export default function EditorPage({ params }: { params: Promise<{ id: string }>
     fetchDiagram();
   }, [diagramId]);
 
-  const handleSave = async (xml: string) => {
+  const handleSave = useCallback(async (xml: string) => {
     if (!diagramId) return;
     
     const response = await fetch(`/api/diagrams/${diagramId}`, {
@@ -65,7 +69,7 @@ export default function EditorPage({ params }: { params: Promise<{ id: string }>
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        name: diagram?.name,
+        name: diagramNameRef.current,
         xml_content: xml,
       }),
     });
@@ -78,11 +82,14 @@ export default function EditorPage({ params }: { params: Promise<{ id: string }>
     // Update local state with saved content
     const savedDiagram = await response.json();
     setDiagram(savedDiagram);
-  };
+    diagramNameRef.current = savedDiagram.name;
+  }, [diagramId]);
 
-  const handleNameChange = async (name: string) => {
+  const handleNameChange = useCallback(async (name: string) => {
     if (!diagramId) return;
     
+    // Update ref immediately for use in save
+    diagramNameRef.current = name;
     setDiagram(prev => prev ? { ...prev, name } : null);
     
     await fetch(`/api/diagrams/${diagramId}`, {
@@ -92,12 +99,12 @@ export default function EditorPage({ params }: { params: Promise<{ id: string }>
       },
       body: JSON.stringify({ name }),
     });
-  };
+  }, [diagramId]);
 
   const handleDelete = async () => {
     if (!diagramId) return;
     
-    if (!confirm('Are you sure you want to delete this diagram?')) return;
+    if (!confirm(t('editor.confirmDelete'))) return;
 
     const response = await fetch(`/api/diagrams/${diagramId}`, {
       method: 'DELETE',
@@ -106,19 +113,24 @@ export default function EditorPage({ params }: { params: Promise<{ id: string }>
     if (response.ok) {
       router.push('/dashboard');
     } else {
-      alert('Failed to delete diagram');
+      alert(t('editor.errors.deleteFailed'));
     }
   };
 
   if (loading) {
-    return <div className={styles.loading}>Loading diagram...</div>;
+    return (
+      <div className={styles.loading}>
+        <div className={styles.spinner}></div>
+        <p>{t('editor.loadingDiagram')}</p>
+      </div>
+    );
   }
 
   if (error) {
     return (
       <div className={styles.error}>
-        <p>{error}</p>
-        <a href="/dashboard">Back to Dashboard</a>
+        <p>{t(error)}</p>
+        <a href="/dashboard">{t('editor.back')}</a>
       </div>
     );
   }

@@ -87,5 +87,48 @@
         "nameRequired": "First name and last name are required"
       }
     }
+  },
+  "dashboard": {
+    "title": "My Diagrams",
+    "welcome": "Welcome, {{name}}",
+    "signOut": "Sign Out",
+    "newDiagram": "New Diagram",
+    "noDiagrams": {
+      "title": "No diagrams yet",
+      "subtitle": "Create your first BPMN diagram to get started",
+      "cta": "Create your first diagram"
+    },
+    "card": {
+      "lastEdited": "Last edited: {{date}}",
+      "delete": "Delete diagram",
+      "confirm": "Confirm",
+      "cancel": "Cancel"
+    }
+  },
+  "editor": {
+    "back": "Back",
+    "untitledDiagram": "Untitled Diagram",
+    "clickToEditName": "Click to edit name",
+    "loadBpmn": "Load BPMN",
+    "save": "Save",
+    "saving": "Saving...",
+    "saved": "Saved!",
+    "downloadBpmn": "Download BPMN",
+    "downloadSvg": "Download SVG",
+    "delete": "Delete",
+    "loadingEditor": "Loading editor...",
+    "loadingFile": "Loading and saving diagram...",
+    "loadingDiagram": "Loading diagram...",
+    "creatingDiagram": "Creating diagram...",
+    "tryAgain": "Try Again",
+    "errors": {
+      "loadFailed": "Failed to load the diagram editor",
+      "saveFailed": "Failed to save diagram",
+      "importFailed": "Failed to import diagram. Make sure the file is a valid BPMN file.",
+      "diagramNotFound": "Diagram not found",
+      "loadDiagramFailed": "Failed to load diagram",
+      "deleteFailed": "Failed to delete diagram"
+    },
+    "confirmDelete": "Are you sure you want to delete this diagram?"
   }
 }

@@ -1,7 +1,9 @@
 'use client';
 
 import { useEffect, useRef, useState, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import styles from './BpmnEditor.module.css';
+import { createTranslateModule } from '@/lib/bpmn-translations';
 
 // Import BPMN styles at module level to ensure they're loaded
 import './bpmn-styles.css';
@@ -42,11 +44,13 @@ export default function BpmnEditor({
   diagramName = 'Untitled Diagram',
   onNameChange 
 }: BpmnEditorProps) {
+  const { t, i18n } = useTranslation();
   const containerRef = useRef<HTMLDivElement>(null);
   const propertiesPanelRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const modelerRef = useRef<any>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingFile, setIsLoadingFile] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
@@ -68,6 +72,9 @@ export default function BpmnEditor({
           await import('bpmn-js-properties-panel');
         const BpmnColorPickerModule = (await import('bpmn-js-color-picker')).default;
 
+        // Create translation module for current language
+        const translateModule = createTranslateModule(i18n.language);
+
         modeler = new BpmnModeler({
           container: containerRef.current,
           keyboard: {
@@ -76,7 +83,8 @@ export default function BpmnEditor({
           additionalModules: [
             BpmnPropertiesPanelModule,
             BpmnPropertiesProviderModule,
-            BpmnColorPickerModule
+            BpmnColorPickerModule,
+            translateModule
           ],
           propertiesPanel: {
             parent: propertiesPanelRef.current
@@ -101,7 +109,7 @@ export default function BpmnEditor({
         setIsLoading(false);
       } catch (err) {
         console.error('Failed to initialize BPMN modeler:', err);
-        setError('Failed to load the diagram editor');
+        setError('editor.errors.loadFailed');
         setIsLoading(false);
       }
     };
@@ -113,7 +121,7 @@ export default function BpmnEditor({
         modeler.destroy();
       }
     };
-  }, [initialXml]);
+  }, [initialXml, i18n.language]);
 
   // Handle save
   const handleSave = useCallback(async () => {
@@ -125,11 +133,11 @@ export default function BpmnEditor({
       const { xml } = await modelerRef.current.saveXML({ format: true });
       await onSave(xml);
       setHasChanges(false);
-      setSaveMessage('Saved!');
+      setSaveMessage('editor.saved');
       setTimeout(() => setSaveMessage(null), 2000);
     } catch (err) {
       console.error('Failed to save diagram:', err);
-      setError('Failed to save diagram');
+      setError('editor.errors.saveFailed');
     } finally {
       setIsSaving(false);
     }
@@ -140,6 +148,7 @@ export default function BpmnEditor({
     const file = e.target.files?.[0];
     if (!file || !modelerRef.current) return;
 
+    setIsLoadingFile(true);
     const reader = new FileReader();
     reader.onload = async (event) => {
       const xml = event.target?.result as string;
@@ -151,22 +160,43 @@ export default function BpmnEditor({
         const canvas = modelerRef.current.get('canvas');
         canvas.zoom('fit-viewport');
         
-        setHasChanges(true);
         // Update name from filename
         const fileName = file.name.replace(/\.(bpmn|xml)$/i, '');
         setLocalName(fileName);
         if (onNameChange) {
           onNameChange(fileName);
         }
+        
+        // Trigger save after successful import
+        if (onSave) {
+          setIsSaving(true);
+          setSaveMessage(null);
+          try {
+            const { xml: savedXml } = await modelerRef.current.saveXML({ format: true });
+            await onSave(savedXml);
+            setHasChanges(false);
+            setSaveMessage('editor.saved');
+            setTimeout(() => setSaveMessage(null), 2000);
+          } catch (saveErr) {
+            console.error('Failed to save after import:', saveErr);
+            setHasChanges(true);
+          } finally {
+            setIsSaving(false);
+          }
+        } else {
+          setHasChanges(true);
+        }
       } catch (err) {
         console.error('Failed to import diagram:', err);
-        setError('Failed to import diagram. Make sure the file is a valid BPMN file.');
+        setError('editor.errors.importFailed');
+      } finally {
+        setIsLoadingFile(false);
       }
     };
     reader.readAsText(file);
     // Reset the input so the same file can be loaded again
     e.target.value = '';
-  }, [onNameChange]);
+  }, [onNameChange, onSave]);
 
   // Handle download BPMN
   const handleDownloadBpmn = useCallback(async () => {
@@ -212,6 +242,7 @@ export default function BpmnEditor({
     const file = e.dataTransfer.files[0];
     if (!file || !modelerRef.current) return;
 
+    setIsLoadingFile(true);
     const reader = new FileReader();
     reader.onload = async (event) => {
       const xml = event.target?.result as string;
@@ -223,20 +254,41 @@ export default function BpmnEditor({
         const canvas = modelerRef.current.get('canvas');
         canvas.zoom('fit-viewport');
         
-        setHasChanges(true);
         // Update name from filename
         const fileName = file.name.replace(/\.(bpmn|xml)$/i, '');
         setLocalName(fileName);
         if (onNameChange) {
           onNameChange(fileName);
         }
+        
+        // Trigger save after successful import
+        if (onSave) {
+          setIsSaving(true);
+          setSaveMessage(null);
+          try {
+            const { xml: savedXml } = await modelerRef.current.saveXML({ format: true });
+            await onSave(savedXml);
+            setHasChanges(false);
+            setSaveMessage('Saved!');
+            setTimeout(() => setSaveMessage(null), 2000);
+          } catch (saveErr) {
+            console.error('Failed to save after import:', saveErr);
+            setHasChanges(true);
+          } finally {
+            setIsSaving(false);
+          }
+        } else {
+          setHasChanges(true);
+        }
       } catch (err) {
         console.error('Failed to import diagram:', err);
         setError('Failed to import diagram');
+      } finally {
+        setIsLoadingFile(false);
       }
     };
     reader.readAsText(file);
-  }, [onNameChange]);
+  }, [onNameChange, onSave]);
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -254,8 +306,8 @@ export default function BpmnEditor({
   if (error) {
     return (
       <div className={styles.error}>
-        <p>{error}</p>
-        <button onClick={() => setError(null)}>Try Again</button>
+        <p>{t(error)}</p>
+        <button onClick={() => setError(null)}>{t('editor.tryAgain')}</button>
       </div>
     );
   }
@@ -265,7 +317,7 @@ export default function BpmnEditor({
       <div className={styles.toolbar}>
         <div className={styles.leftSection}>
           <a href={backHref} className={styles.backLink}>
-            ← Back
+            ← {t('editor.back')}
           </a>
           <div className={styles.nameDivider} />
           {editingName ? (
@@ -282,7 +334,7 @@ export default function BpmnEditor({
             <h1 
               className={styles.diagramName} 
               onClick={() => setEditingName(true)}
-              title="Click to edit name"
+              title={t('editor.clickToEditName')}
             >
               {localName}
               {hasChanges && <span className={styles.unsaved}>*</span>}
@@ -301,7 +353,7 @@ export default function BpmnEditor({
             onClick={() => fileInputRef.current?.click()} 
             className={styles.button}
           >
-            Load BPMN
+            {t('editor.loadBpmn')}
           </button>
           {onSave && (
             <button 
@@ -309,22 +361,30 @@ export default function BpmnEditor({
               disabled={isSaving || !hasChanges}
               className={styles.saveButton}
             >
-              {isSaving ? 'Saving...' : saveMessage || 'Save'}
+              {isSaving ? t('editor.saving') : saveMessage ? t(saveMessage) : t('editor.save')}
             </button>
           )}
           <button onClick={handleDownloadBpmn} className={styles.button}>
-            Download BPMN
+            {t('editor.downloadBpmn')}
           </button>
           <button onClick={handleDownloadSvg} className={styles.button}>
-            Download SVG
+            {t('editor.downloadSvg')}
           </button>
           {onDelete && (
             <button onClick={onDelete} className={styles.deleteButton}>
-              Delete
+              {t('editor.delete')}
             </button>
           )}
         </div>
       </div>
+      
+      {/* Full-screen overlay for saving after file import */}
+      {isLoadingFile && (
+        <div className={styles.overlay}>
+          <div className={styles.spinner}></div>
+          <p>{t('editor.loadingFile')}</p>
+        </div>
+      )}
       
       <div 
         className={styles.container}
@@ -333,7 +393,8 @@ export default function BpmnEditor({
       >
         {isLoading && (
           <div className={styles.loading}>
-            <p>Loading editor...</p>
+            <div className={styles.spinner}></div>
+            <p>{t('editor.loadingEditor')}</p>
           </div>
         )}
         <div ref={containerRef} className={styles.canvas} />
