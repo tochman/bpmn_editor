@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './BpmnEditor.module.css';
 import { createTranslateModule } from '@/lib/bpmn-translations';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 // Import BPMN styles at module level to ensure they're loaded
 import './bpmn-styles.css';
@@ -57,13 +58,39 @@ export default function BpmnEditor({
   const [editingName, setEditingName] = useState(false);
   const [localName, setLocalName] = useState(diagramName);
   const [saveMessage, setSaveMessage] = useState<string | null>(null);
+  const currentXmlRef = useRef<string | null>(null);
+  const [currentLanguage, setCurrentLanguage] = useState(i18n.language);
+
+  // Listen for language changes
+  useEffect(() => {
+    const handleLanguageChange = (lng: string) => {
+      setCurrentLanguage(lng);
+    };
+    
+    i18n.on('languageChanged', handleLanguageChange);
+    
+    return () => {
+      i18n.off('languageChanged', handleLanguageChange);
+    };
+  }, [i18n]);
 
   // Initialize the modeler
   useEffect(() => {
     let modeler: any = null;
+    let isDestroyed = false;
 
     const initModeler = async () => {
       if (!containerRef.current || !propertiesPanelRef.current) return;
+
+      // Save current diagram state before reinitializing (for language changes)
+      if (modelerRef.current && !isDestroyed) {
+        try {
+          const { xml } = await modelerRef.current.saveXML({ format: true });
+          currentXmlRef.current = xml;
+        } catch (e) {
+          // Ignore errors when saving current state
+        }
+      }
 
       try {
         // Dynamic imports for client-side only
@@ -73,7 +100,7 @@ export default function BpmnEditor({
         const BpmnColorPickerModule = (await import('bpmn-js-color-picker')).default;
 
         // Create translation module for current language
-        const translateModule = createTranslateModule(i18n.language);
+        const translateModule = createTranslateModule(currentLanguage);
 
         modeler = new BpmnModeler({
           container: containerRef.current,
@@ -93,8 +120,8 @@ export default function BpmnEditor({
 
         modelerRef.current = modeler;
 
-        // Load the diagram
-        const xml = initialXml || DEFAULT_DIAGRAM;
+        // Load the diagram - use saved state if available, otherwise initial or default
+        const xml = currentXmlRef.current || initialXml || DEFAULT_DIAGRAM;
         await modeler.importXML(xml);
         
         // Zoom to fit the diagram
@@ -117,11 +144,16 @@ export default function BpmnEditor({
     initModeler();
 
     return () => {
+      isDestroyed = true;
       if (modeler) {
+        // Save current state before destroying
+        modeler.saveXML({ format: true }).then(({ xml }: { xml: string }) => {
+          currentXmlRef.current = xml;
+        }).catch(() => {});
         modeler.destroy();
       }
     };
-  }, [initialXml, i18n.language]);
+  }, [initialXml, currentLanguage]);
 
   // Handle save
   const handleSave = useCallback(async () => {
@@ -375,6 +407,9 @@ export default function BpmnEditor({
               {t('editor.delete')}
             </button>
           )}
+          <div className={styles.languageSwitcher}>
+            <LanguageSwitcher />
+          </div>
         </div>
       </div>
       

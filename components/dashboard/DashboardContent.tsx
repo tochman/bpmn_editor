@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import DiagramCard from './DiagramCard';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 interface DiagramSummary {
   id: string;
@@ -36,6 +37,7 @@ export default function DashboardContent({ diagrams, firstName }: DashboardConte
               </Link>
             </div>
             <div className="flex items-center gap-4">
+              <LanguageSwitcher />
               {firstName && (
                 <span className="text-sm text-gray-600">
                   {t('dashboard.welcome', { name: firstName })}
