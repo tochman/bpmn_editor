@@ -35,7 +35,9 @@ export default function EditorPage({ params }: { params: Promise<{ id: string }>
 
     const fetchDiagram = async () => {
       try {
-        const response = await fetch(`/api/diagrams/${diagramId}`);
+        const response = await fetch(`/api/diagrams/${diagramId}`, {
+          cache: 'no-store',
+        });
         if (response.ok) {
           const data = await response.json();
           setDiagram(data);
@@ -70,8 +72,12 @@ export default function EditorPage({ params }: { params: Promise<{ id: string }>
 
     if (!response.ok) {
       const errorData = await response.json();
-      alert(`Failed to save: ${errorData.error}`);
+      throw new Error(`Failed to save: ${errorData.error}`);
     }
+    
+    // Update local state with saved content
+    const savedDiagram = await response.json();
+    setDiagram(savedDiagram);
   };
 
   const handleNameChange = async (name: string) => {
@@ -119,16 +125,13 @@ export default function EditorPage({ params }: { params: Promise<{ id: string }>
 
   return (
     <div className={styles.container}>
-      <div className={styles.topBar}>
-        <a href="/dashboard" className={styles.backLink}>← Back to Dashboard</a>
-        <button onClick={handleDelete} className={styles.deleteButton}>
-          Delete Diagram
-        </button>
-      </div>
       {diagram && (
         <BpmnEditor
+          key={diagram.id}
           initialXml={diagram.xml_content}
           onSave={handleSave}
+          onDelete={handleDelete}
+          backHref="/dashboard"
           diagramName={diagram.name}
           onNameChange={handleNameChange}
         />

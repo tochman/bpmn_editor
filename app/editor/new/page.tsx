@@ -38,11 +38,9 @@ export default function NewEditorPage() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.backLink}>
-        <a href="/dashboard">← Back to Dashboard</a>
-      </div>
       <BpmnEditor 
         onSave={handleSave} 
+        backHref="/dashboard"
         diagramName={diagramName}
         onNameChange={setDiagramName}
       />

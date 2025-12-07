@@ -10,33 +10,56 @@
   justify-content: space-between;
   align-items: center;
   padding: 0.75rem 1rem;
-  background: #f8f9fa;
+  background: white;
   border-bottom: 1px solid #e0e0e0;
+  gap: 1rem;
 }
 
-.nameSection {
+.leftSection {
   display: flex;
   align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.backLink {
+  color: #0066cc;
+  text-decoration: none;
+  font-size: 0.875rem;
+  white-space: nowrap;
+}
+
+.backLink:hover {
+  text-decoration: underline;
+}
+
+.nameDivider {
+  width: 1px;
+  height: 1.5rem;
+  background: #e0e0e0;
 }
 
 .diagramName {
   margin: 0;
-  font-size: 1.25rem;
-  font-weight: 500;
+  font-size: 1.125rem;
+  font-weight: 600;
   color: #333;
   cursor: pointer;
   padding: 0.25rem 0.5rem;
   border-radius: 4px;
   transition: background 0.2s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .diagramName:hover {
-  background: #e9ecef;
+  background: #f0f0f0;
 }
 
 .nameInput {
-  font-size: 1.25rem;
-  font-weight: 500;
+  font-size: 1.125rem;
+  font-weight: 600;
   padding: 0.25rem 0.5rem;
   border: 2px solid #0066cc;
   border-radius: 4px;
@@ -51,16 +74,18 @@
 .actions {
   display: flex;
   gap: 0.5rem;
+  flex-shrink: 0;
 }
 
 .button {
   padding: 0.5rem 1rem;
   background: #f0f0f0;
-  border: 1px solid #ccc;
+  border: 1px solid #ddd;
   border-radius: 4px;
   cursor: pointer;
   font-size: 0.875rem;
   transition: background 0.2s;
+  white-space: nowrap;
 }
 
 .button:hover {
@@ -76,6 +101,7 @@
   cursor: pointer;
   font-size: 0.875rem;
   transition: background 0.2s;
+  white-space: nowrap;
 }
 
 .saveButton:hover:not(:disabled) {
@@ -85,6 +111,22 @@
 .saveButton:disabled {
   background: #ccc;
   cursor: not-allowed;
+}
+
+.deleteButton {
+  padding: 0.5rem 1rem;
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.deleteButton:hover {
+  background: #c82333;
 }
 
 .container {

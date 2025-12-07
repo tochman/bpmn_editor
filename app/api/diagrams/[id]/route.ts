@@ -30,7 +30,11 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  return NextResponse.json(diagram);
+  return NextResponse.json(diagram, {
+    headers: {
+      'Cache-Control': 'no-store, no-cache, must-revalidate',
+    },
+  });
 }
 
 // PUT /api/diagrams/[id] - Update a diagram

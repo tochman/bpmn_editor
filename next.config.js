@@ -8,12 +8,20 @@ const nextConfig = {
     'bpmn-js-color-picker',
     'diagram-js'
   ],
-  webpack: (config) => {
+  webpack: (config, { dev }) => {
     // Handle .bpmn files as raw text
     config.module.rules.push({
       test: /\.bpmn$/,
       type: 'asset/source',
     });
+    
+    // Suppress webpack cache warnings in development
+    if (dev) {
+      config.infrastructureLogging = {
+        level: 'error',
+      };
+    }
+    
     return config;
   },
 };

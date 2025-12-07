@@ -3,6 +3,9 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import styles from './BpmnEditor.module.css';
 
+// Import BPMN styles at module level to ensure they're loaded
+import './bpmn-styles.css';
+
 // Default empty diagram
 const DEFAULT_DIAGRAM = `<?xml version="1.0" encoding="UTF-8"?>
 <bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -25,18 +28,23 @@ const DEFAULT_DIAGRAM = `<?xml version="1.0" encoding="UTF-8"?>
 interface BpmnEditorProps {
   initialXml?: string;
   onSave?: (xml: string) => Promise<void>;
+  onDelete?: () => void;
+  backHref?: string;
   diagramName?: string;
   onNameChange?: (name: string) => void;
 }
 
 export default function BpmnEditor({ 
   initialXml, 
-  onSave, 
+  onSave,
+  onDelete,
+  backHref = '/dashboard',
   diagramName = 'Untitled Diagram',
   onNameChange 
 }: BpmnEditorProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const propertiesPanelRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const modelerRef = useRef<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -44,6 +52,7 @@ export default function BpmnEditor({
   const [hasChanges, setHasChanges] = useState(false);
   const [editingName, setEditingName] = useState(false);
   const [localName, setLocalName] = useState(diagramName);
+  const [saveMessage, setSaveMessage] = useState<string | null>(null);
 
   // Initialize the modeler
   useEffect(() => {
@@ -58,12 +67,6 @@ export default function BpmnEditor({
         const { BpmnPropertiesPanelModule, BpmnPropertiesProviderModule } = 
           await import('bpmn-js-properties-panel');
         const BpmnColorPickerModule = (await import('bpmn-js-color-picker')).default;
-
-        // Import CSS
-        await import('bpmn-js/dist/assets/diagram-js.css');
-        await import('bpmn-js/dist/assets/bpmn-js.css');
-        await import('bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css');
-        await import('@bpmn-io/properties-panel/dist/assets/properties-panel.css');
 
         modeler = new BpmnModeler({
           container: containerRef.current,
@@ -85,6 +88,10 @@ export default function BpmnEditor({
         // Load the diagram
         const xml = initialXml || DEFAULT_DIAGRAM;
         await modeler.importXML(xml);
+        
+        // Zoom to fit the diagram
+        const canvas = modeler.get('canvas');
+        canvas.zoom('fit-viewport');
 
         // Track changes
         modeler.on('commandStack.changed', () => {
@@ -113,10 +120,13 @@ export default function BpmnEditor({
     if (!modelerRef.current || !onSave) return;
 
     setIsSaving(true);
+    setSaveMessage(null);
     try {
       const { xml } = await modelerRef.current.saveXML({ format: true });
       await onSave(xml);
       setHasChanges(false);
+      setSaveMessage('Saved!');
+      setTimeout(() => setSaveMessage(null), 2000);
     } catch (err) {
       console.error('Failed to save diagram:', err);
       setError('Failed to save diagram');
@@ -124,6 +134,39 @@ export default function BpmnEditor({
       setIsSaving(false);
     }
   }, [onSave]);
+
+  // Handle file load
+  const handleFileLoad = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !modelerRef.current) return;
+
+    const reader = new FileReader();
+    reader.onload = async (event) => {
+      const xml = event.target?.result as string;
+      try {
+        // Import the new XML directly - bpmn-js handles clearing internally
+        await modelerRef.current.importXML(xml);
+        
+        // Get canvas and zoom to fit
+        const canvas = modelerRef.current.get('canvas');
+        canvas.zoom('fit-viewport');
+        
+        setHasChanges(true);
+        // Update name from filename
+        const fileName = file.name.replace(/\.(bpmn|xml)$/i, '');
+        setLocalName(fileName);
+        if (onNameChange) {
+          onNameChange(fileName);
+        }
+      } catch (err) {
+        console.error('Failed to import diagram:', err);
+        setError('Failed to import diagram. Make sure the file is a valid BPMN file.');
+      }
+    };
+    reader.readAsText(file);
+    // Reset the input so the same file can be loaded again
+    e.target.value = '';
+  }, [onNameChange]);
 
   // Handle download BPMN
   const handleDownloadBpmn = useCallback(async () => {
@@ -173,15 +216,27 @@ export default function BpmnEditor({
     reader.onload = async (event) => {
       const xml = event.target?.result as string;
       try {
+        // Import the new XML directly - bpmn-js handles clearing internally
         await modelerRef.current.importXML(xml);
+        
+        // Get canvas and zoom to fit
+        const canvas = modelerRef.current.get('canvas');
+        canvas.zoom('fit-viewport');
+        
         setHasChanges(true);
+        // Update name from filename
+        const fileName = file.name.replace(/\.(bpmn|xml)$/i, '');
+        setLocalName(fileName);
+        if (onNameChange) {
+          onNameChange(fileName);
+        }
       } catch (err) {
         console.error('Failed to import diagram:', err);
         setError('Failed to import diagram');
       }
     };
     reader.readAsText(file);
-  }, []);
+  }, [onNameChange]);
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -208,7 +263,11 @@ export default function BpmnEditor({
   return (
     <div className={styles.wrapper}>
       <div className={styles.toolbar}>
-        <div className={styles.nameSection}>
+        <div className={styles.leftSection}>
+          <a href={backHref} className={styles.backLink}>
+            ← Back
+          </a>
+          <div className={styles.nameDivider} />
           {editingName ? (
             <input
               type="text"
@@ -220,24 +279,37 @@ export default function BpmnEditor({
               className={styles.nameInput}
             />
           ) : (
-            <h2 
+            <h1 
               className={styles.diagramName} 
               onClick={() => setEditingName(true)}
               title="Click to edit name"
             >
               {localName}
               {hasChanges && <span className={styles.unsaved}>*</span>}
-            </h2>
+            </h1>
           )}
         </div>
         <div className={styles.actions}>
+          <input
+            type="file"
+            ref={fileInputRef}
+            accept=".bpmn,.xml"
+            onChange={handleFileLoad}
+            style={{ display: 'none' }}
+          />
+          <button 
+            onClick={() => fileInputRef.current?.click()} 
+            className={styles.button}
+          >
+            Load BPMN
+          </button>
           {onSave && (
             <button 
               onClick={handleSave} 
               disabled={isSaving || !hasChanges}
               className={styles.saveButton}
             >
-              {isSaving ? 'Saving...' : 'Save'}
+              {isSaving ? 'Saving...' : saveMessage || 'Save'}
             </button>
           )}
           <button onClick={handleDownloadBpmn} className={styles.button}>
@@ -246,6 +318,11 @@ export default function BpmnEditor({
           <button onClick={handleDownloadSvg} className={styles.button}>
             Download SVG
           </button>
+          {onDelete && (
+            <button onClick={onDelete} className={styles.deleteButton}>
+              Delete
+            </button>
+          )}
         </div>
       </div>
       

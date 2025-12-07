@@ -4,22 +4,6 @@
   flex-direction: column;
 }
 
-.backLink {
-  padding: 0.75rem 1rem;
-  background: white;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.backLink a {
-  color: #0066cc;
-  text-decoration: none;
-  font-size: 0.875rem;
-}
-
-.backLink a:hover {
-  text-decoration: underline;
-}
-
 .loading {
   display: flex;
   align-items: center;
