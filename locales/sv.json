@@ -1,0 +1,91 @@
+{
+  "nav": {
+    "signIn": "Logga in",
+    "signUp": "Registrera",
+    "dashboard": "Kontrollpanel"
+  },
+  "hero": {
+    "title": "Skapa vackra BPMN-diagram",
+    "subtitle": "Designa, redigera och hantera dina affärsprocessdiagram med vår intuitiva visuella editor. Samarbeta med ditt team och lagra allt säkert i molnet.",
+    "cta": "Kom igång gratis",
+    "secondaryCta": "Läs mer"
+  },
+  "features": {
+    "title": "Allt du behöver för att modellera dina processer",
+    "subtitle": "Kraftfulla funktioner för att hjälpa dig designa och hantera dina affärsprocesser",
+    "visualEditor": {
+      "title": "Visuell dra och släpp-editor",
+      "description": "Skapa professionella BPMN 2.0-diagram med vårt intuitiva dra och släpp-gränssnitt. Ingen teknisk expertis krävs."
+    },
+    "cloudStorage": {
+      "title": "Säker molnlagring",
+      "description": "Dina diagram sparas automatiskt och synkroniseras mellan alla dina enheter. Få tillgång till ditt arbete var som helst."
+    },
+    "export": {
+      "title": "Exportalternativ",
+      "description": "Ladda ner dina diagram som BPMN-filer för import till andra verktyg, eller som SVG-bilder för presentationer."
+    },
+    "properties": {
+      "title": "Egenskapspanel",
+      "description": "Konfigurera varje aspekt av dina processelement med vår omfattande egenskapspanel."
+    },
+    "colors": {
+      "title": "Färganpassning",
+      "description": "Lägg till visuell tydlighet i dina diagram med anpassade färger för olika processelement."
+    },
+    "responsive": {
+      "title": "Fungerar överallt",
+      "description": "Få tillgång till dina diagram från dator eller surfplatta. Vår editor anpassar sig till din skärmstorlek."
+    }
+  },
+  "cta": {
+    "title": "Redo att effektivisera dina processer?",
+    "subtitle": "Gå med tusentals proffs som använder vårt verktyg för att designa och dokumentera sina affärsprocesser.",
+    "button": "Skapa ditt första diagram"
+  },
+  "footer": {
+    "tagline": "Professionell BPMN-diagrameditor",
+    "copyright": "© 2025 BPMN Editor. Alla rättigheter förbehållna."
+  },
+  "language": {
+    "en": "English",
+    "sv": "Svenska"
+  },
+  "auth": {
+    "signIn": {
+      "title": "Logga in",
+      "email": "E-post",
+      "emailPlaceholder": "du@exempel.se",
+      "password": "Lösenord",
+      "passwordPlaceholder": "••••••••",
+      "submit": "Logga in",
+      "submitting": "Loggar in...",
+      "noAccount": "Har du inget konto?",
+      "signUpLink": "Registrera dig"
+    },
+    "signUp": {
+      "title": "Skapa konto",
+      "firstName": "Förnamn",
+      "firstNamePlaceholder": "Johan",
+      "lastName": "Efternamn",
+      "lastNamePlaceholder": "Svensson",
+      "email": "E-post",
+      "emailPlaceholder": "du@exempel.se",
+      "password": "Lösenord",
+      "passwordPlaceholder": "••••••••",
+      "confirmPassword": "Bekräfta lösenord",
+      "usageType": "Hur kommer du använda appen?",
+      "private": "Privat användning",
+      "professional": "Professionell användning",
+      "submit": "Registrera",
+      "submitting": "Skapar konto...",
+      "hasAccount": "Har du redan ett konto?",
+      "signInLink": "Logga in",
+      "successMessage": "Kolla din e-post för att bekräfta ditt konto!",
+      "errors": {
+        "passwordMismatch": "Lösenorden matchar inte",
+        "nameRequired": "Förnamn och efternamn krävs"
+      }
+    }
+  }
+}

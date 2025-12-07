@@ -1,0 +1,91 @@
+{
+  "nav": {
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "dashboard": "Dashboard"
+  },
+  "hero": {
+    "title": "Create Beautiful BPMN Diagrams",
+    "subtitle": "Design, edit, and manage your business process diagrams with our intuitive visual editor. Collaborate with your team and store everything securely in the cloud.",
+    "cta": "Get Started Free",
+    "secondaryCta": "Learn More"
+  },
+  "features": {
+    "title": "Everything you need to model your processes",
+    "subtitle": "Powerful features to help you design and manage your business processes",
+    "visualEditor": {
+      "title": "Visual Drag & Drop Editor",
+      "description": "Create professional BPMN 2.0 diagrams with our intuitive drag-and-drop interface. No technical expertise required."
+    },
+    "cloudStorage": {
+      "title": "Secure Cloud Storage",
+      "description": "Your diagrams are automatically saved and synced across all your devices. Access your work from anywhere."
+    },
+    "export": {
+      "title": "Export Options",
+      "description": "Download your diagrams as BPMN files for import into other tools, or as SVG images for presentations."
+    },
+    "properties": {
+      "title": "Properties Panel",
+      "description": "Configure every aspect of your process elements with our comprehensive properties panel."
+    },
+    "colors": {
+      "title": "Color Customization",
+      "description": "Add visual clarity to your diagrams with custom colors for different process elements."
+    },
+    "responsive": {
+      "title": "Works Everywhere",
+      "description": "Access your diagrams from desktop or tablet. Our editor adapts to your screen size."
+    }
+  },
+  "cta": {
+    "title": "Ready to streamline your processes?",
+    "subtitle": "Join thousands of professionals who use our tool to design and document their business processes.",
+    "button": "Create Your First Diagram"
+  },
+  "footer": {
+    "tagline": "Professional BPMN diagram editor",
+    "copyright": "© 2025 BPMN Editor. All rights reserved."
+  },
+  "language": {
+    "en": "English",
+    "sv": "Svenska"
+  },
+  "auth": {
+    "signIn": {
+      "title": "Sign In",
+      "email": "Email",
+      "emailPlaceholder": "you@example.com",
+      "password": "Password",
+      "passwordPlaceholder": "••••••••",
+      "submit": "Sign In",
+      "submitting": "Signing in...",
+      "noAccount": "Don't have an account?",
+      "signUpLink": "Sign up"
+    },
+    "signUp": {
+      "title": "Create Account",
+      "firstName": "First Name",
+      "firstNamePlaceholder": "John",
+      "lastName": "Last Name",
+      "lastNamePlaceholder": "Doe",
+      "email": "Email",
+      "emailPlaceholder": "you@example.com",
+      "password": "Password",
+      "passwordPlaceholder": "••••••••",
+      "confirmPassword": "Confirm Password",
+      "usageType": "How will you use this app?",
+      "private": "Private use",
+      "professional": "Professional use",
+      "submit": "Sign Up",
+      "submitting": "Creating account...",
+      "hasAccount": "Already have an account?",
+      "signInLink": "Sign in",
+      "successMessage": "Check your email to confirm your account!",
+      "errors": {
+        "passwordMismatch": "Passwords do not match",
+        "nameRequired": "First name and last name are required"
+      }
+    }
+  }
+}
