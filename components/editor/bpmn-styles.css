@@ -1,5 +1,11 @@
-/* Import BPMN.js styles */
-@import 'bpmn-js/dist/assets/diagram-js.css';
-@import 'bpmn-js/dist/assets/bpmn-js.css';
-@import 'bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css';
-@import '@bpmn-io/properties-panel/dist/assets/properties-panel.css';
+/* 
+ * Custom BPMN.js style overrides
+ * 
+ * Note: Base BPMN.js styles are imported in app/globals.css for proper Next.js CSS handling:
+ * - bpmn-js/dist/assets/diagram-js.css
+ * - bpmn-js/dist/assets/bpmn-js.css
+ * - bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css
+ * - @bpmn-io/properties-panel/dist/assets/properties-panel.css
+ *
+ * Add any custom style overrides below.
+ */

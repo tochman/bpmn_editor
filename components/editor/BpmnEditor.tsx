@@ -6,8 +6,7 @@ import styles from './BpmnEditor.module.css';
 import { createTranslateModule } from '@/lib/bpmn-translations';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 
-// Import BPMN styles at module level to ensure they're loaded
-import './bpmn-styles.css';
+// Note: BPMN styles are imported in app/globals.css for proper Next.js CSS handling
 
 // Default empty diagram
 const DEFAULT_DIAGRAM = `<?xml version="1.0" encoding="UTF-8"?>
@@ -82,15 +81,31 @@ export default function BpmnEditor({
     const initModeler = async () => {
       if (!containerRef.current || !propertiesPanelRef.current) return;
 
-      // Save current diagram state before reinitializing (for language changes)
-      if (modelerRef.current && !isDestroyed) {
+      // Destroy existing modeler first and save its state
+      if (modelerRef.current) {
         try {
           const { xml } = await modelerRef.current.saveXML({ format: true });
           currentXmlRef.current = xml;
         } catch (e) {
           // Ignore errors when saving current state
         }
+        try {
+          modelerRef.current.destroy();
+        } catch (e) {
+          // Ignore destroy errors
+        }
+        modelerRef.current = null;
+        
+        // Clear the container DOM to prevent duplicate renders
+        if (containerRef.current) {
+          containerRef.current.innerHTML = '';
+        }
+        if (propertiesPanelRef.current) {
+          propertiesPanelRef.current.innerHTML = '';
+        }
       }
+
+      if (isDestroyed) return;
 
       try {
         // Dynamic imports for client-side only
@@ -101,6 +116,8 @@ export default function BpmnEditor({
 
         // Create translation module for current language
         const translateModule = createTranslateModule(currentLanguage);
+
+        if (isDestroyed) return;
 
         modeler = new BpmnModeler({
           container: containerRef.current,
@@ -145,13 +162,6 @@ export default function BpmnEditor({
 
     return () => {
       isDestroyed = true;
-      if (modeler) {
-        // Save current state before destroying
-        modeler.saveXML({ format: true }).then(({ xml }: { xml: string }) => {
-          currentXmlRef.current = xml;
-        }).catch(() => {});
-        modeler.destroy();
-      }
     };
   }, [initialXml, currentLanguage]);
 

@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/* BPMN.js styles - imported here for proper Next.js CSS handling */
+@import 'bpmn-js/dist/assets/diagram-js.css';
+@import 'bpmn-js/dist/assets/bpmn-js.css';
+@import 'bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css';
+@import '@bpmn-io/properties-panel/dist/assets/properties-panel.css';
+
 * {
   box-sizing: border-box;
 }
