@@ -2,6 +2,9 @@
   "name": "bpmn-editor",
   "version": "2.0.0",
   "private": true,
+  "engines": {
+    "node": ">=18.17.0"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -9,28 +12,29 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@bpmn-io/properties-panel": "^3.24.1",
-    "@supabase/ssr": "^0.5.2",
-    "@supabase/supabase-js": "^2.47.10",
-    "autoprefixer": "^10.4.22",
+    "@bpmn-io/properties-panel": "^3.56.0",
+    "@netlify/plugin-nextjs": "^5.16.1",
+    "@supabase/ssr": "^0.12.7",
+    "@supabase/supabase-js": "^2.117.2",
+    "autoprefixer": "^10.6.1",
     "bpmn-js": "^17.11.1",
     "bpmn-js-color-picker": "^0.7.1",
-    "bpmn-js-properties-panel": "^5.25.0",
-    "i18next": "^25.7.1",
-    "i18next-browser-languagedetector": "^8.2.0",
-    "next": "^15.0.3",
-    "postcss": "^8.5.6",
+    "bpmn-js-properties-panel": "^5.65.1",
+    "i18next": "^25.10.10",
+    "i18next-browser-languagedetector": "^8.2.1",
+    "next": "^15.5.27",
+    "postcss": "^8.5.28",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-i18next": "^16.4.0",
-    "tailwindcss": "3"
+    "react-i18next": "^16.6.6",
+    "tailwindcss": "^3.4.19"
   },
   "devDependencies": {
-    "@types/node": "^22.10.1",
-    "@types/react": "^18.3.12",
-    "@types/react-dom": "^18.3.1",
-    "eslint": "^9.15.0",
-    "eslint-config-next": "^15.0.3",
-    "typescript": "^5.7.2"
+    "@types/node": "^22.20.5",
+    "@types/react": "^18.3.31",
+    "@types/react-dom": "^18.3.7",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^15.5.27",
+    "typescript": "^5.9.3"
   }
 }

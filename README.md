@@ -34,6 +34,8 @@ NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 ```
 
+For Netlify, add the same variables in Site configuration → Environment variables. The app will not build until those values exist because the Supabase client is initialized during Next.js prerendering.
+
 ### 3. Set Up Database
 
 Run the SQL schema in your Supabase SQL Editor (found in `supabase/schema.sql`):

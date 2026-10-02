@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
+import { getSupabaseConfig } from '@/lib/supabase/config';
 import { NextRequest, NextResponse } from 'next/server';
 
 interface RouteParams {
@@ -7,6 +8,12 @@ interface RouteParams {
 
 // GET /api/diagrams/[id] - Get a specific diagram
 export async function GET(request: NextRequest, { params }: RouteParams) {
+  const { isConfigured } = getSupabaseConfig();
+
+  if (!isConfigured) {
+    return NextResponse.json({ error: 'Supabase is not configured' }, { status: 503 });
+  }
+
   const supabase = await createClient();
   const { id } = await params;
   
@@ -39,6 +46,12 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
 
 // PUT /api/diagrams/[id] - Update a diagram
 export async function PUT(request: NextRequest, { params }: RouteParams) {
+  const { isConfigured } = getSupabaseConfig();
+
+  if (!isConfigured) {
+    return NextResponse.json({ error: 'Supabase is not configured' }, { status: 503 });
+  }
+
   const supabase = await createClient();
   const { id } = await params;
   
@@ -79,6 +92,12 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
 
 // DELETE /api/diagrams/[id] - Delete a diagram
 export async function DELETE(request: NextRequest, { params }: RouteParams) {
+  const { isConfigured } = getSupabaseConfig();
+
+  if (!isConfigured) {
+    return NextResponse.json({ error: 'Supabase is not configured' }, { status: 503 });
+  }
+
   const supabase = await createClient();
   const { id } = await params;
   

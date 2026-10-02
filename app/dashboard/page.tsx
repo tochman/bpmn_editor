@@ -1,8 +1,15 @@
 import { createClient } from '@/lib/supabase/server';
+import { getSupabaseConfig } from '@/lib/supabase/config';
 import { redirect } from 'next/navigation';
 import DashboardContent from '@/components/dashboard/DashboardContent';
 
 export default async function DashboardPage() {
+  const { isConfigured } = getSupabaseConfig();
+
+  if (!isConfigured) {
+    redirect('/login');
+  }
+
   const supabase = await createClient();
   
   const { data: { user }, error: authError } = await supabase.auth.getUser();

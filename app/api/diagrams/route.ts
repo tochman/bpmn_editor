@@ -1,8 +1,15 @@
 import { createClient } from '@/lib/supabase/server';
+import { getSupabaseConfig } from '@/lib/supabase/config';
 import { NextRequest, NextResponse } from 'next/server';
 
 // GET /api/diagrams - List all diagrams for the current user
 export async function GET() {
+  const { isConfigured } = getSupabaseConfig();
+
+  if (!isConfigured) {
+    return NextResponse.json({ error: 'Supabase is not configured' }, { status: 503 });
+  }
+
   const supabase = await createClient();
   
   const { data: { user }, error: authError } = await supabase.auth.getUser();
@@ -26,6 +33,12 @@ export async function GET() {
 
 // POST /api/diagrams - Create a new diagram
 export async function POST(request: NextRequest) {
+  const { isConfigured } = getSupabaseConfig();
+
+  if (!isConfigured) {
+    return NextResponse.json({ error: 'Supabase is not configured' }, { status: 503 });
+  }
+
   const supabase = await createClient();
   
   const { data: { user }, error: authError } = await supabase.auth.getUser();
