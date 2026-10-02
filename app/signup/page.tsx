@@ -10,8 +10,7 @@ export default function SignupPage() {
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <nav className="p-4 flex justify-between items-center">
         <Link href="/" className="flex items-center gap-3 w-fit">
-          <Image src="/bpmn_editor_logo.png" alt="BPMNEditor logo" width={36} height={36} className="h-9 w-9 object-contain shrink-0" />
-          <span className="text-xl font-bold text-gray-900">BPMNEditor</span>
+          <Image src="/bpmn_editor_logo.png" alt="BPMNEditor" width={3248} height={610} className="h-6 w-auto max-w-[140px] shrink-0 object-contain" />
         </Link>
         <LanguageSwitcher />
       </nav>

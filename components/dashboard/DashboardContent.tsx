@@ -28,8 +28,7 @@ export default function DashboardContent({ diagrams, firstName }: DashboardConte
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-4">
               <Link href="/" className="flex items-center gap-3">
-                <Image src="/bpmn_editor_logo.png" alt="BPMNEditor logo" width={36} height={36} className="h-9 w-9 object-contain shrink-0" />
-                <span className="text-xl font-bold text-gray-900">BPMNEditor</span>
+                <Image src="/bpmn_editor_logo.png" alt="BPMNEditor" width={3248} height={610} className="h-6 w-auto max-w-[145px] shrink-0 object-contain" />
               </Link>
             </div>
             <div className="flex items-center gap-4">

@@ -453,7 +453,7 @@ export default function BpmnEditor({
           alt="BPMNEditor"
           width={3248}
           height={610}
-          className="h-[18px] w-auto shrink-0 object-contain"
+          className="h-4 w-auto max-w-[105px] shrink-0 object-contain"
         />
         <div className="min-w-0 flex-1 text-center">
           <p className="mb-1">

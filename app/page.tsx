@@ -25,8 +25,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <Link href="/" className="flex items-center gap-3">
-              <Image src="/bpmn_editor_logo.png" alt="BPMNEditor logo" width={36} height={36} className="h-9 w-9 object-contain shrink-0" />
-              <span className="text-xl font-bold text-gray-900">BPMNEditor</span>
+              <Image src="/bpmn_editor_logo.png" alt="BPMNEditor" width={3248} height={610} className="h-7 w-auto max-w-[160px] shrink-0 object-contain" />
             </Link>
             <div className="flex items-center gap-4">
               <LanguageSwitcher />
@@ -261,7 +260,7 @@ export default function Home() {
       <footer className="py-12 px-4 sm:px-6 lg:px-8 border-t border-gray-200">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-2">
-            <Image src="/bpmn_editor_logo.png" alt="BPMNEditor logo" width={24} height={24} className="h-6 w-6 object-contain shrink-0" />
+            <Image src="/bpmn_editor_logo.png" alt="BPMNEditor" width={3248} height={610} className="h-5 w-auto max-w-[120px] shrink-0 object-contain" />
             <span className="text-gray-600">{t('footer.tagline')}</span>
           </div>
           <div className="text-center md:text-right text-gray-500 text-sm">
