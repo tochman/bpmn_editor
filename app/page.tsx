@@ -24,20 +24,10 @@ export default function Home() {
       <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center gap-3">
-              <Image src="/bpmn_editor_logo.png" alt="BPMNEditor logo" width={36} height={36} className="h-9 w-auto" />
-              <div className="flex flex-col">
-                <span className="text-xl font-bold text-gray-900">BPMNEditor</span>
-                <a
-                  href="https://auctum.se/solutions"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-[10px] font-medium text-gray-500 hover:text-primary-600"
-                >
-                  BPMNEditor is a part of the Auctum Business Suite
-                </a>
-              </div>
-            </div>
+            <Link href="/" className="flex items-center gap-3">
+              <Image src="/bpmn_editor_logo.png" alt="BPMNEditor logo" width={36} height={36} className="h-9 w-9 object-contain shrink-0" />
+              <span className="text-xl font-bold text-gray-900">BPMNEditor</span>
+            </Link>
             <div className="flex items-center gap-4">
               <LanguageSwitcher />
               {user ? (
@@ -77,12 +67,6 @@ export default function Home() {
             </h1>
             <p className="mt-6 text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
               {t('hero.subtitle')}
-            </p>
-            <p className="mt-4 text-sm font-medium text-gray-600">
-              BPMNEditor is a part of the{' '}
-              <a href="https://auctum.se/solutions" target="_blank" rel="noreferrer" className="text-primary-600 hover:text-primary-700 underline">
-                Auctum Business Suite
-              </a>
             </p>
             <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
               <Link
@@ -277,10 +261,17 @@ export default function Home() {
       <footer className="py-12 px-4 sm:px-6 lg:px-8 border-t border-gray-200">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-2">
-            <Image src="/bpmn_editor_logo.png" alt="BPMNEditor logo" width={24} height={24} className="h-6 w-auto" />
+            <Image src="/bpmn_editor_logo.png" alt="BPMNEditor logo" width={24} height={24} className="h-6 w-6 object-contain shrink-0" />
             <span className="text-gray-600">{t('footer.tagline')}</span>
           </div>
           <div className="text-center md:text-right text-gray-500 text-sm">
+            <p className="mb-1">
+              BPMNEditor is part of the{' '}
+              <a href="https://auctum.se/solutions" target="_blank" rel="noreferrer" className="text-primary-600 hover:text-primary-700 underline">
+                Auctum Business Suite
+              </a>
+              .
+            </p>
             <p>{t('footer.copyright')}</p>
             <p className="mt-1">
               Powered by <a href="https://bpmn.io/" target="_blank" rel="noreferrer" className="text-primary-600 hover:text-primary-700 underline">bpmn-js</a> from{' '}

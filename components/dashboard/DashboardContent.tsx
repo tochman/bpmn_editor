@@ -28,18 +28,8 @@ export default function DashboardContent({ diagrams, firstName }: DashboardConte
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-4">
               <Link href="/" className="flex items-center gap-3">
-                <Image src="/bpmn_editor_logo.png" alt="BPMNEditor logo" width={36} height={36} className="h-9 w-auto" />
-                <div className="flex flex-col">
-                  <span className="text-xl font-bold text-gray-900">BPMNEditor</span>
-                  <a
-                    href="https://auctum.se/solutions"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-[10px] font-medium text-gray-500 hover:text-primary-600"
-                  >
-                    Auctum Business Suite
-                  </a>
-                </div>
+                <Image src="/bpmn_editor_logo.png" alt="BPMNEditor logo" width={36} height={36} className="h-9 w-9 object-contain shrink-0" />
+                <span className="text-xl font-bold text-gray-900">BPMNEditor</span>
               </Link>
             </div>
             <div className="flex items-center gap-4">
@@ -106,6 +96,13 @@ export default function DashboardContent({ diagrams, firstName }: DashboardConte
 
       <footer className="border-t border-gray-200 bg-white/80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 text-center text-sm text-gray-500">
+          <p className="mb-1">
+            BPMNEditor is part of the{' '}
+            <a href="https://auctum.se/solutions" target="_blank" rel="noreferrer" className="text-primary-600 hover:text-primary-700 underline">
+              Auctum Business Suite
+            </a>
+            .
+          </p>
           Powered by <a href="https://bpmn.io/" target="_blank" rel="noreferrer" className="text-primary-600 hover:text-primary-700 underline">bpmn-js</a> from{' '}
           <a href="https://bpmn.io/" target="_blank" rel="noreferrer" className="text-primary-600 hover:text-primary-700 underline">bpmn.io</a>. Licensed under the{' '}
           <a href="https://bpmn.io/license" target="_blank" rel="noreferrer" className="text-primary-600 hover:text-primary-700 underline">bpmn.io license</a>.
