@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import DiagramCard from './DiagramCard';
@@ -26,14 +27,19 @@ export default function DashboardContent({ diagrams, firstName }: DashboardConte
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-4">
-              <Link href="/" className="flex items-center gap-2">
-                <svg className="w-8 h-8 text-primary-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <rect x="3" y="3" width="18" height="18" rx="2" />
-                  <circle cx="8" cy="8" r="2" />
-                  <circle cx="16" cy="16" r="2" />
-                  <path d="M10 8h4M8 10v4M16 10v4" />
-                </svg>
-                <span className="text-xl font-bold text-gray-900">BPMN Editor</span>
+              <Link href="/" className="flex items-center gap-3">
+                <Image src="/bpmn_editor_logo.png" alt="BPMNEditor logo" width={36} height={36} className="h-9 w-auto" />
+                <div className="flex flex-col">
+                  <span className="text-xl font-bold text-gray-900">BPMNEditor</span>
+                  <a
+                    href="https://auctum.se/solutions"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-[10px] font-medium text-gray-500 hover:text-primary-600"
+                  >
+                    Auctum Business Suite
+                  </a>
+                </div>
               </Link>
             </div>
             <div className="flex items-center gap-4">
@@ -97,6 +103,14 @@ export default function DashboardContent({ diagrams, firstName }: DashboardConte
           </div>
         )}
       </main>
+
+      <footer className="border-t border-gray-200 bg-white/80">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 text-center text-sm text-gray-500">
+          Powered by <a href="https://bpmn.io/" target="_blank" rel="noreferrer" className="text-primary-600 hover:text-primary-700 underline">bpmn-js</a> from{' '}
+          <a href="https://bpmn.io/" target="_blank" rel="noreferrer" className="text-primary-600 hover:text-primary-700 underline">bpmn.io</a>. Licensed under the{' '}
+          <a href="https://bpmn.io/license" target="_blank" rel="noreferrer" className="text-primary-600 hover:text-primary-700 underline">bpmn.io license</a>.
+        </div>
+      </footer>
     </div>
   );
 }

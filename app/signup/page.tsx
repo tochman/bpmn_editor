@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { SignupForm } from '@/components/auth/AuthForm';
 import { LanguageSwitcher } from '@/components/ui/LanguageSwitcher';
 import Link from 'next/link';
@@ -8,14 +9,14 @@ export default function SignupPage() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <nav className="p-4 flex justify-between items-center">
-        <Link href="/" className="flex items-center gap-2 w-fit">
-          <svg className="w-8 h-8 text-primary-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <rect x="3" y="3" width="18" height="18" rx="2" />
-            <circle cx="8" cy="8" r="2" />
-            <circle cx="16" cy="16" r="2" />
-            <path d="M10 8h4M8 10v4M16 10v4" />
-          </svg>
-          <span className="text-xl font-bold text-gray-900">BPMN Editor</span>
+        <Link href="/" className="flex items-center gap-3 w-fit">
+          <Image src="/bpmn_editor_logo.png" alt="BPMNEditor logo" width={36} height={36} className="h-9 w-auto" />
+          <div className="flex flex-col">
+            <span className="text-xl font-bold text-gray-900">BPMNEditor</span>
+            <a href="https://auctum.se/solutions" target="_blank" rel="noreferrer" className="text-[10px] font-medium text-gray-500 hover:text-primary-600">
+              Auctum Business Suite
+            </a>
+          </div>
         </Link>
         <LanguageSwitcher />
       </nav>

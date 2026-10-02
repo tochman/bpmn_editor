@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './BpmnEditor.module.css';
@@ -358,6 +359,17 @@ export default function BpmnEditor({
     <div className={styles.wrapper}>
       <div className={styles.toolbar}>
         <div className={styles.leftSection}>
+          <div className="flex items-center gap-2 mr-2">
+            <Image src="/bpmn_editor_logo.png" alt="BPMNEditor logo" width={28} height={28} className="h-7 w-auto" />
+            <a
+              href="https://auctum.se/solutions"
+              target="_blank"
+              rel="noreferrer"
+              className="text-[10px] font-medium text-gray-500 hover:text-primary-600"
+            >
+              Auctum Business Suite
+            </a>
+          </div>
           <a href={backHref} className={styles.backLink}>
             ← {t('editor.back')}
           </a>
@@ -444,6 +456,12 @@ export default function BpmnEditor({
         )}
         <div ref={containerRef} className={styles.canvas} />
         <div ref={propertiesPanelRef} className={styles.propertiesPanel} />
+      </div>
+
+      <div className="border-t border-gray-200 bg-white px-4 py-3 text-center text-xs text-gray-500">
+        Powered by <a href="https://bpmn.io/" target="_blank" rel="noreferrer" className="text-primary-600 hover:text-primary-700 underline">bpmn-js</a> from{' '}
+        <a href="https://bpmn.io/" target="_blank" rel="noreferrer" className="text-primary-600 hover:text-primary-700 underline">bpmn.io</a>. Licensed under the{' '}
+        <a href="https://bpmn.io/license" target="_blank" rel="noreferrer" className="text-primary-600 hover:text-primary-700 underline">bpmn.io license</a>.
       </div>
     </div>
   );
